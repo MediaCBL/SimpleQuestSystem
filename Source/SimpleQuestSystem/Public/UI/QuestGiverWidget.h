@@ -6,6 +6,8 @@
 #include "QuestUserWidgetBase.h"
 #include "QuestGiverWidget.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnAcceptQuest);
+
 UCLASS()
 class SIMPLEQUESTSYSTEM_API UQuestGiverWidget : public UQuestUserWidgetBase
 {
@@ -13,5 +15,11 @@ class SIMPLEQUESTSYSTEM_API UQuestGiverWidget : public UQuestUserWidgetBase
 
 public:
 	virtual void Refresh_Implementation(UQuestInstance* Instance) override;
+
+	UFUNCTION(BlueprintCallable, Category="Quest")
+	void AcceptQuest();
+
+	UPROPERTY(BlueprintAssignable, Category="Quest")
+	FOnAcceptQuest OnAcceptQuest;
 };
 
