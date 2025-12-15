@@ -8,11 +8,16 @@
 #include "QuestDefinition.generated.h"
 
 UCLASS(BlueprintType)
-class SIMPLEQUESTSYSTEM_API UQuestDefinition : public UDataAsset
+class SIMPLEQUESTSYSTEM_API UQuestDefinition : public UPrimaryDataAsset
 {
 	GENERATED_BODY()
 
 public:
+	
+	/*virtual FPrimaryAssetId GetPrimaryAssetId() const override
+	{
+		return FPrimaryAssetId(TEXT("Quest"), QuestID);
+	}*/
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	FName QuestID;

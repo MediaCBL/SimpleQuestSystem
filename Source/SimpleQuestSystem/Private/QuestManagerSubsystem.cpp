@@ -1,12 +1,34 @@
 ﻿// © Felix Courteau-Boutin All Right Reserved
 
 #include "QuestManagerSubsystem.h"
+#include "Engine/AssetManager.h"
+
 void UQuestManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
 
-	// Optional: auto-register definitions here (Asset Manager scan) later.
-	// For now, definitions are registered explicitly via RegisterQuestDefinition(s).
+	// Auto-register definitions (Asset Manager scan).
+	UAssetManager& AssetManager = UAssetManager::Get();
+	UAssetManager::Get().CallOrRegister_OnCompletedInitialScan(
+		FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &UQuestManagerSubsystem::RegisterAllQuestDefinitions)
+	);
+}
+
+void UQuestManagerSubsystem::RegisterAllQuestDefinitions()
+{
+	UAssetManager& AssetManager = UAssetManager::Get();
+
+	TArray<FPrimaryAssetId> QuestAssetIds;
+	AssetManager.GetPrimaryAssetIdList(FPrimaryAssetType("Quest"), QuestAssetIds);
+
+	for (const FPrimaryAssetId& AssetId : QuestAssetIds)
+	{
+		if (UQuestDefinition* Def =
+			Cast<UQuestDefinition>(AssetManager.GetPrimaryAssetObject(AssetId)))
+		{
+			RegisterQuestDefinition(Def);
+		}
+	}
 }
 
 void UQuestManagerSubsystem::Deinitialize()

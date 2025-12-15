@@ -28,6 +28,7 @@ class SIMPLEQUESTSYSTEM_API UQuestManagerSubsystem : public UWorldSubsystem
 public:
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+
 	virtual void Deinitialize() override;
 	UFUNCTION(BlueprintCallable, Category="Quest|Definitions")
 	void RegisterQuestDefinition(UQuestDefinition* Definition);
@@ -120,6 +121,18 @@ public:
 	TArray<UQuestInstance*> ActiveQuests;
 
 private:
+
+	const FQuestSaveData* FindQuestStateConst(FName QuestID) const;
+	FQuestSaveData& FindOrAddQuestState(FName QuestID);
+	const FQuestGiverSaveData* FindGiverStateConst(FName QuestGiverID) const;
+	FQuestGiverSaveData& FindOrAddGiverState(FName QuestGiverID);
+	bool ArePrerequisitesMet(const UQuestDefinition* Def) const;
+	bool IsRepeatCooldownSatisfied(const UQuestDefinition* Def, const FQuestSaveData& State) const;
+	void RegisterAllQuestDefinitions();
+
+	UFUNCTION(BlueprintCallable)
+	void ProgressObjective(FName QuestID, FName TargetID, int32 Amount = 1);
+	
 	// Definition registry: QuestID -> Definition
 	UPROPERTY(Transient)
 	TMap<FName, TObjectPtr<UQuestDefinition>> QuestDefinitions;
@@ -130,15 +143,4 @@ private:
 
 	UPROPERTY(Transient)
 	TMap<FName, FQuestGiverSaveData> QuestGiverStates;
-
-private:
-	const FQuestSaveData* FindQuestStateConst(FName QuestID) const;
-	FQuestSaveData& FindOrAddQuestState(FName QuestID);
-	const FQuestGiverSaveData* FindGiverStateConst(FName QuestGiverID) const;
-	FQuestGiverSaveData& FindOrAddGiverState(FName QuestGiverID);
-	bool ArePrerequisitesMet(const UQuestDefinition* Def) const;
-	bool IsRepeatCooldownSatisfied(const UQuestDefinition* Def, const FQuestSaveData& State) const;
-
-	UFUNCTION(BlueprintCallable)
-	void ProgressObjective(FName QuestID, FName TargetID, int32 Amount = 1);
 };
