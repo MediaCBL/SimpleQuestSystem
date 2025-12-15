@@ -7,7 +7,7 @@
 #include "QuestDefinition.h"
 #include "QuestInstance.generated.h"
 
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, UQuestInstance*, Quest);
+//DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, UQuestInstance*, Quest);
 
 UCLASS(BlueprintType)
 class SIMPLEQUESTSYSTEM_API UQuestInstance : public UObject
@@ -25,8 +25,8 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	bool bCompleted = false;
 
-	UPROPERTY(BlueprintAssignable)
-	FOnQuestUpdated OnQuestUpdated;
+	//UPROPERTY(BlueprintAssignable)
+	//FOnQuestUpdated OnQuestUpdated;
 
 	void Init(const UQuestDefinition* Def);
 

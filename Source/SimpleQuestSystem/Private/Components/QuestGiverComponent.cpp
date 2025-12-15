@@ -2,24 +2,85 @@
 
 #include "Components/QuestGiverComponent.h"
 #include "QuestManagerSubsystem.h"
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
+
+UQuestGiverComponent::UQuestGiverComponent()
+{
+	PrimaryComponentTick.bCanEverTick = false;
+}
+
+void UQuestGiverComponent::BeginPlay()
+{
+	Super::BeginPlay();
+
+#if WITH_EDITOR
+	if (QuestGiverID.IsNone())
+	{
+		UE_LOG(LogTemp, Warning,
+			TEXT("QuestGiverComponent on %s has no QuestGiverID set"),
+			*GetOwner()->GetName());
+	}
+#endif
+}
+
+UQuestManagerSubsystem* UQuestGiverComponent::GetQuestManager() const
+{
+	if (UWorld* World = GetWorld())
+	{
+		return World->GetSubsystem<UQuestManagerSubsystem>();
+	}
+	return nullptr;
+}
+
+bool UQuestGiverComponent::CanOfferQuest(const UQuestDefinition* QuestDefinition) const
+{
+	if (!QuestDefinition || QuestGiverID.IsNone())
+	{
+		return false;
+	}
+
+	const UQuestManagerSubsystem* Manager = GetQuestManager();
+	if (!Manager)
+	{
+		return false;
+	}
+
+	return Manager->CanGiveQuestFromGiver(
+		QuestGiverID,
+		QuestDefinition->QuestID
+	) == EQuestAvailability::Available;
+}
 
 void UQuestGiverComponent::OfferQuestsToPlayer(APlayerController* Player)
 {
-	if (!Player) return;
+	if (!Player || QuestGiverID.IsNone())
+	{
+		return;
+	}
 
-	UWorld* World = GetWorld();
-	if (!World) return;
-
-	UQuestManagerSubsystem* Manager = World->GetSubsystem<UQuestManagerSubsystem>();
-	if (!Manager) return;
+	UQuestManagerSubsystem* Manager = GetQuestManager();
+	if (!Manager)
+	{
+		return;
+	}
 
 	for (UQuestDefinition* QuestDefinition : QuestsOffered)
 	{
-		if (QuestDefinition)
+		if (!QuestDefinition)
 		{
-			Manager->StartQuest(QuestDefinition);
+			continue;
+		}
+
+		const EQuestAvailability Availability =
+			Manager->CanGiveQuestFromGiver(
+				QuestGiverID,
+				QuestDefinition->QuestID
+			);
+
+		if (Availability == EQuestAvailability::Available)
+		{
+			Manager->GiveQuest(QuestGiverID, QuestDefinition->QuestID);
 		}
 	}
 }
-
-

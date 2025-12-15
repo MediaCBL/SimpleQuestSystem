@@ -10,5 +10,4 @@ void UQuestGiverWidget::Refresh_Implementation(UQuestInstance* Instance)
 void UQuestGiverWidget::AcceptQuest()
 {
 	OnAcceptQuest.Broadcast();
-	// Update subsystem quest manager 
 }

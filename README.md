@@ -186,6 +186,19 @@ The system is designed for extension. Possible enhancements include:
 
 ---
 
+## Saving / Loading
+
+This plugin does not implement a save system.
+
+To persist quest state, call:
+
+* `UQuestManagerSubsystem::ExportState`
+* `UQuestManagerSubsystem::ImportState`
+
+from your project’s save manager.
+
+---
+
 ## License
 
 MIT License

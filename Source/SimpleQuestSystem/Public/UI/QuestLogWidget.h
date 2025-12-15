@@ -3,14 +3,20 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "QuestUserWidgetBase.h"
+#include "Blueprint/UserWidget.h"
 #include "QuestLogWidget.generated.h"
 
+class UListView;
 UCLASS()
-class SIMPLEQUESTSYSTEM_API UQuestLogWidget : public UQuestUserWidgetBase
+class SIMPLEQUESTSYSTEM_API UQuestLogWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
-public:
-	virtual void Refresh_Implementation(UQuestInstance* Instance) override;
+protected:
+
+	virtual void NativeConstruct() override;
+	
+	UPROPERTY(meta = (BindWidget))
+	UListView* QuestList;
+
 };

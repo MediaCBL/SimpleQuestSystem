@@ -23,7 +23,7 @@ bool UQuestInstance::TryProgress(int32 ObjectiveIndex, int32 Amount)
 		State.bCompleted = true;
 
 	CheckCompletion();
-	OnQuestUpdated.Broadcast(this);
+	//OnQuestUpdated.Broadcast(this);
 
 	return true;
 }

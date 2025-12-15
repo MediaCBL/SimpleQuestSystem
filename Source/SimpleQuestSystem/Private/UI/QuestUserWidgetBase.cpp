@@ -21,7 +21,7 @@ void UQuestUserWidgetBase::BindToInstance()
 {
 	if (QuestInstance)
 	{
-		QuestInstance->OnQuestUpdated.AddDynamic(this, &UQuestUserWidgetBase::Refresh);
+		//QuestInstance->OnQuestUpdated.AddDynamic(this, &UQuestUserWidgetBase::Refresh);
 	}
 }
 

@@ -25,4 +25,15 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TArray<FQuestObjective> Objectives;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Quest")
+	bool bIsRepeatable = false;
+
+	/** Cooldown in seconds (0 = no cooldown). Used only if repeatable. */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Quest")
+	float RepeatCooldownSeconds = 0.0f;
+
+	/** Optional prerequisites (QuestIDs that must be completed at least once). */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Quest")
+	TArray<FName> RequiredCompletedQuests;
 };
