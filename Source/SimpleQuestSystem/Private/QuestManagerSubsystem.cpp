@@ -8,10 +8,10 @@ void UQuestManagerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Super::Initialize(Collection);
 
 	// Auto-register definitions (Asset Manager scan).
-	UAssetManager& AssetManager = UAssetManager::Get();
+	/*UAssetManager& AssetManager = UAssetManager::Get();
 	UAssetManager::Get().CallOrRegister_OnCompletedInitialScan(
 		FSimpleMulticastDelegate::FDelegate::CreateUObject(this, &UQuestManagerSubsystem::RegisterAllQuestDefinitions)
-	);
+	);*/
 }
 
 void UQuestManagerSubsystem::RegisterAllQuestDefinitions()

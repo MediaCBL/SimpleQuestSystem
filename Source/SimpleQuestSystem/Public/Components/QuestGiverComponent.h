@@ -27,7 +27,7 @@ public:
 
 	/** Offer all available quests (usually triggered by interaction or dialog) */
 	UFUNCTION(BlueprintCallable, Category="Quest Giver")
-	void OfferQuestsToPlayer(APlayerController* Player);
+	void OfferQuestsToPlayer();
 
 	/** Check availability for UI / dialog branching */
 	UFUNCTION(BlueprintPure, Category="Quest Giver")

@@ -22,6 +22,17 @@ void UQuestGiverComponent::BeginPlay()
 			*GetOwner()->GetName());
 	}
 #endif
+
+	//TODO find a better way to Register quest with asset registery
+	UQuestManagerSubsystem* Manager = GetQuestManager();
+	if (Manager)
+	{
+		for (UQuestDefinition* Quest : QuestsOffered)
+		{
+			if (!Quest) continue;
+			Manager->RegisterQuestDefinition(Quest);			
+		}
+	}
 }
 
 UQuestManagerSubsystem* UQuestGiverComponent::GetQuestManager() const
@@ -52,9 +63,9 @@ bool UQuestGiverComponent::CanOfferQuest(const UQuestDefinition* QuestDefinition
 	) == EQuestAvailability::Available;
 }
 
-void UQuestGiverComponent::OfferQuestsToPlayer(APlayerController* Player)
+void UQuestGiverComponent::OfferQuestsToPlayer()
 {
-	if (!Player || QuestGiverID.IsNone())
+	if (QuestGiverID.IsNone())
 	{
 		return;
 	}
