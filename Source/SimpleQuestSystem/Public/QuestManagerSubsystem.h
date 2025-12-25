@@ -119,6 +119,8 @@ public:
 	
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UQuestInstance*> ActiveQuests;
+	UPROPERTY(BlueprintReadOnly)
+	TArray<UQuestInstance*> CompletedQuests;
 
 private:
 

@@ -7,16 +7,15 @@
 #include "QuestLogWidget.generated.h"
 
 class UListView;
+
 UCLASS()
 class SIMPLEQUESTSYSTEM_API UQuestLogWidget : public UUserWidget
 {
 	GENERATED_BODY()
 
 protected:
-
 	virtual void NativeConstruct() override;
-	
+
 	UPROPERTY(meta = (BindWidget))
 	UListView* QuestList;
-
 };

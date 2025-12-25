@@ -24,6 +24,9 @@ public:
 
 	UPROPERTY(BlueprintReadOnly)
 	bool bCompleted = false;
+	/** Optional per-quest flags for extensions. */
+	UPROPERTY(BlueprintReadOnly)
+	TMap<FName, bool> QuestFlags;
 
 	//UPROPERTY(BlueprintAssignable)
 	//FOnQuestUpdated OnQuestUpdated;
@@ -31,6 +34,10 @@ public:
 	void Init(const UQuestDefinition* Def);
 
 	bool TryProgress(int32 ObjectiveIndex, int32 Amount = 1);
+	
+	void RestoreFromSaveData(const FQuestSaveData& SaveData);
+
+	bool IsCompleted() const { return bCompleted; }
 
 private:
 	void CheckCompletion();

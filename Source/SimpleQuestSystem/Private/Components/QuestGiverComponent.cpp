@@ -18,8 +18,8 @@ void UQuestGiverComponent::BeginPlay()
 	if (QuestGiverID.IsNone())
 	{
 		UE_LOG(LogTemp, Warning,
-			TEXT("QuestGiverComponent on %s has no QuestGiverID set"),
-			*GetOwner()->GetName());
+		       TEXT("QuestGiverComponent on %s has no QuestGiverID set"),
+		       *GetOwner()->GetName());
 	}
 #endif
 
@@ -30,7 +30,7 @@ void UQuestGiverComponent::BeginPlay()
 		for (UQuestDefinition* Quest : QuestsOffered)
 		{
 			if (!Quest) continue;
-			Manager->RegisterQuestDefinition(Quest);			
+			Manager->RegisterQuestDefinition(Quest);
 		}
 	}
 }

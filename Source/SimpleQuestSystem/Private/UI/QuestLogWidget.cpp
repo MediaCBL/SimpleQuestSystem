@@ -1,7 +1,6 @@
 ﻿// © Felix Courteau-Boutin All Right Reserved
 
 #include "UI/QuestLogWidget.h"
-
 #include "QuestManagerSubsystem.h"
 #include "Components/ListView.h"
 #include "UI/QuestListItemObject.h"
@@ -9,7 +8,7 @@
 void UQuestLogWidget::NativeConstruct()
 {
 	Super::NativeConstruct();
-	
+
 	if (!QuestList)
 	{
 		return;

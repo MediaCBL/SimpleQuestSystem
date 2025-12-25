@@ -6,7 +6,7 @@
 UENUM(BlueprintType)
 enum class EQObjectiveType : uint8
 {
-	Kill  UMETA(DisplayName="Kill"),
+	Kill UMETA(DisplayName="Kill"),
 	Collect UMETA(DisplayName="Collect"),
 	ReachLocation UMETA(DisplayName="Reach Location"),
 	Custom UMETA(DisplayName="Custom")
@@ -45,10 +45,10 @@ struct FObjectiveState
 UENUM(BlueprintType)
 enum class EQuestState : uint8
 {
-	Inactive	UMETA(DisplayName="Inactive"),
-	Active		UMETA(DisplayName="Active"),
-	Completed	UMETA(DisplayName="Completed"),
-	Failed		UMETA(DisplayName="Failed"),
+	Inactive UMETA(DisplayName="Inactive"),
+	Active UMETA(DisplayName="Active"),
+	Completed UMETA(DisplayName="Completed"),
+	Failed UMETA(DisplayName="Failed"),
 };
 
 /**
@@ -57,13 +57,13 @@ enum class EQuestState : uint8
 UENUM(BlueprintType)
 enum class EQuestAvailability : uint8
 {
-	Available					UMETA(DisplayName="Available"),
-	AlreadyActive				UMETA(DisplayName="Already Active"),
-	AlreadyCompleted			UMETA(DisplayName="Already Completed"),
-	OnCooldown					UMETA(DisplayName="On Cooldown"),
-	LockedByPrerequisite		UMETA(DisplayName="Locked By Prerequisite"),
-	AlreadyGivenByThisGiver		UMETA(DisplayName="Already Given By This Giver"),
-	InvalidQuest				UMETA(DisplayName="Invalid Quest"),
+	Available UMETA(DisplayName="Available"),
+	AlreadyActive UMETA(DisplayName="Already Active"),
+	AlreadyCompleted UMETA(DisplayName="Already Completed"),
+	OnCooldown UMETA(DisplayName="On Cooldown"),
+	LockedByPrerequisite UMETA(DisplayName="Locked By Prerequisite"),
+	AlreadyGivenByThisGiver UMETA(DisplayName="Already Given By This Giver"),
+	InvalidQuest UMETA(DisplayName="Invalid Quest"),
 };
 
 /**
@@ -72,8 +72,8 @@ enum class EQuestAvailability : uint8
 UENUM(BlueprintType)
 enum class EQuestGiverQuestState : uint8
 {
-	None	UMETA(DisplayName="None"),
-	Given	UMETA(DisplayName="Given"),
+	None UMETA(DisplayName="None"),
+	Given UMETA(DisplayName="Given"),
 	// Optional future:
 	// Completed UMETA(DisplayName="Completed"),
 	// Locked    UMETA(DisplayName="Locked"),

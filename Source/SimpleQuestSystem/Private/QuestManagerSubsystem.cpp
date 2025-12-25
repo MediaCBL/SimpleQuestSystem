@@ -421,6 +421,31 @@ void UQuestManagerSubsystem::ImportState(const TMap<FName, FQuestSaveData>& InQu
 	// Notify UI that state changed (optional: batch event)
 	for (const auto& KVP : QuestStates)
 	{
+		
+			const FName QuestID = KVP.Key;
+			const FQuestSaveData& SaveData = KVP.Value;
+
+			const UQuestDefinition* QuestDef = GetQuestDefinition(QuestID);
+			if (!QuestDef)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Quest definition not found for %s"), *QuestID.ToString());
+				continue;
+			}
+
+			UQuestInstance* Instance = NewObject<UQuestInstance>(this);
+			Instance->Init(QuestDef);
+
+			// Restore objective states
+			Instance->RestoreFromSaveData(SaveData);
+
+			if (Instance->IsCompleted())
+			{
+				CompletedQuests.Add(Instance);
+			}
+			else
+			{
+				ActiveQuests.Add(Instance);
+			}
 		OnQuestUpdated.Broadcast(KVP.Key);
 	}
 }
