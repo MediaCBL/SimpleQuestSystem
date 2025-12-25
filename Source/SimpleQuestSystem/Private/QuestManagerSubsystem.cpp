@@ -318,8 +318,15 @@ bool UQuestManagerSubsystem::StartQuest(FName QuestID)
 	State.State = EQuestState::Active;
 	State.CurrentStep = 0;
 
+
+	UQuestInstance* Instance = NewObject<UQuestInstance>(this);
+	Instance->Init(Def);
+
+	ActiveQuests.Add(Instance);
+
 	OnQuestStarted.Broadcast(QuestID);
 	OnQuestUpdated.Broadcast(QuestID);
+
 	return true;
 }
 
@@ -398,13 +405,15 @@ bool UQuestManagerSubsystem::ResetQuestAttempt(FName QuestID)
 
 // -------------------- Save Hooks --------------------
 
-void UQuestManagerSubsystem::ExportState(TMap<FName, FQuestSaveData>& OutQuestStates, TMap<FName, FQuestGiverSaveData>& OutGiverStates) const
+void UQuestManagerSubsystem::ExportState(TMap<FName, FQuestSaveData>& OutQuestStates,
+                                         TMap<FName, FQuestGiverSaveData>& OutGiverStates) const
 {
 	OutQuestStates = QuestStates;
 	OutGiverStates = QuestGiverStates;
 }
 
-void UQuestManagerSubsystem::ImportState(const TMap<FName, FQuestSaveData>& InQuestStates, const TMap<FName, FQuestGiverSaveData>& InGiverStates)
+void UQuestManagerSubsystem::ImportState(const TMap<FName, FQuestSaveData>& InQuestStates,
+                                         const TMap<FName, FQuestGiverSaveData>& InGiverStates)
 {
 	QuestStates = InQuestStates;
 	QuestGiverStates = InGiverStates;
@@ -482,6 +491,7 @@ bool UQuestManagerSubsystem::IsRepeatCooldownSatisfied(const UQuestDefinition* D
 	const FTimespan Since = FDateTime::UtcNow() - State.LastCompletedTime;
 	return Since.GetTotalSeconds() >= Cooldown;
 }
+
 /*UQuestInstance* UQuestManagerSubsystem::StartQuest(const UQuestDefinition* QuestDef)
 {
 	UQuestInstance* Instance = NewObject<UQuestInstance>(this);
@@ -508,4 +518,3 @@ void UQuestManagerSubsystem::ProgressObjective(FName QuestID, FName TargetID, in
 		}
 	}
 }
-
