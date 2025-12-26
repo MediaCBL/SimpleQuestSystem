@@ -92,6 +92,10 @@ struct SIMPLEQUESTSYSTEM_API FQuestSaveData
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 CurrentStep = INDEX_NONE;
+	
+	/** Per-objective progress (index-based) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	TArray<int32> ObjectiveCounts;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	int32 TimesCompleted = 0;

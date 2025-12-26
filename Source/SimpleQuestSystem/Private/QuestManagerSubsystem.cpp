@@ -543,3 +543,34 @@ void UQuestManagerSubsystem::ProgressObjective(FName QuestID, FName TargetID, in
 		}
 	}
 }
+
+void UQuestManagerSubsystem::ProgressObjectiveByTarget(FName TargetID, int32 Amount)
+{
+	for (UQuestInstance* Quest : ActiveQuests)
+	{
+		const int32 Step = Quest->GetCurrentStep();
+		if (!Quest->Definition->Objectives.IsValidIndex(Step))
+			continue;
+
+		const FQuestObjective& Obj = Quest->Definition->Objectives[Step];
+
+		if (Obj.Type == EQObjectiveType::Collect &&
+			Obj.TargetID == TargetID)
+		{
+			if (Quest->TryProgress(Step, Amount))
+				SyncQuestSaveData(Quest);
+		}
+	}
+}
+
+void UQuestManagerSubsystem::SyncQuestSaveData(const UQuestInstance* QuestInstance)
+{
+	if (!QuestInstance || !QuestInstance->Definition)
+		return;
+
+	const FName QuestID = QuestInstance->Definition->QuestID;
+
+	FQuestSaveData& SaveData = QuestStates.FindOrAdd(QuestID);
+
+	QuestInstance->ExportToSaveData(SaveData);
+}

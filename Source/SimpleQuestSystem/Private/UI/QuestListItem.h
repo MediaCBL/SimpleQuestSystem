@@ -7,6 +7,7 @@
 #include "UI/QuestUserWidgetBase.h"
 #include "QuestListItem.generated.h"
 
+enum class EQObjectiveType : uint8;
 class UTextBlock;
 
 UCLASS()
@@ -15,10 +16,9 @@ class SIMPLEQUESTSYSTEM_API UQuestListItem : public UQuestUserWidgetBase, public
 	GENERATED_BODY()
 
 public:
-
-public:
 	virtual void NativeOnListItemObjectSet(UObject* ListItemObject) override;
 	virtual void InitializeFromDefinition(const UQuestDefinition* InDefinition) override;
+	static FString ObjectiveTypeToString(EQObjectiveType Type);
 	
 protected:
 	
@@ -27,4 +27,7 @@ protected:
 
 	UPROPERTY(meta = (BindWidget))
 	UTextBlock* DescriptionText;
+	
+	UPROPERTY(meta = (BindWidget))
+	UTextBlock* ObjectiveText;
 };

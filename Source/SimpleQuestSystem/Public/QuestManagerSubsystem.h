@@ -9,9 +9,13 @@
 #include "QuestManagerSubsystem.generated.h"
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnQuestGiven, FName, QuestGiverID, FName, QuestID);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestStarted, FName, QuestID);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestCompleted, FName, QuestID);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestFailed, FName, QuestID);
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnQuestUpdated, FName, QuestID);
 
 /**
@@ -26,7 +30,6 @@ class SIMPLEQUESTSYSTEM_API UQuestManagerSubsystem : public UWorldSubsystem
 	GENERATED_BODY()
 
 public:
-	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 
 	virtual void Deinitialize() override;
@@ -96,11 +99,22 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Quest|Actions")
 	bool ResetQuestAttempt(FName QuestID);
 
+	UFUNCTION(BlueprintCallable)
+	void ProgressObjective(FName QuestID, FName TargetID, int32 Amount = 1);
+
+	UFUNCTION(BlueprintCallable)
+	void ProgressObjectiveByTarget(FName TargetID, int32 Amount);
+
+	UFUNCTION(BlueprintCallable)
+	void SyncQuestSaveData(const UQuestInstance* QuestInstance);
+
 	/** Export current quest + giver states to be written into a SaveGame object. */
-	void ExportState(TMap<FName, FQuestSaveData>& OutQuestStates, TMap<FName, FQuestGiverSaveData>& OutGiverStates) const;
+	void ExportState(TMap<FName, FQuestSaveData>& OutQuestStates,
+	                 TMap<FName, FQuestGiverSaveData>& OutGiverStates) const;
 
 	/** Import quest + giver states after loading SaveGame. */
-	void ImportState(const TMap<FName, FQuestSaveData>& InQuestStates, const TMap<FName, FQuestGiverSaveData>& InGiverStates);
+	void ImportState(const TMap<FName, FQuestSaveData>& InQuestStates,
+	                 const TMap<FName, FQuestGiverSaveData>& InGiverStates);
 
 	UPROPERTY(BlueprintAssignable, Category="Quest|Events")
 	FOnQuestGiven OnQuestGiven;
@@ -116,14 +130,13 @@ public:
 
 	UPROPERTY(BlueprintAssignable, Category="Quest|Events")
 	FOnQuestUpdated OnQuestUpdated;
-	
+
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UQuestInstance*> ActiveQuests;
 	UPROPERTY(BlueprintReadOnly)
 	TArray<UQuestInstance*> CompletedQuests;
 
 private:
-
 	const FQuestSaveData* FindQuestStateConst(FName QuestID) const;
 	FQuestSaveData& FindOrAddQuestState(FName QuestID);
 	const FQuestGiverSaveData* FindGiverStateConst(FName QuestGiverID) const;
@@ -132,9 +145,6 @@ private:
 	bool IsRepeatCooldownSatisfied(const UQuestDefinition* Def, const FQuestSaveData& State) const;
 	void RegisterAllQuestDefinitions();
 
-	UFUNCTION(BlueprintCallable)
-	void ProgressObjective(FName QuestID, FName TargetID, int32 Amount = 1);
-	
 	// Definition registry: QuestID -> Definition
 	UPROPERTY(Transient)
 	TMap<FName, TObjectPtr<UQuestDefinition>> QuestDefinitions;

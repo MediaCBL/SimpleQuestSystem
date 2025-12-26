@@ -27,6 +27,12 @@ public:
 	/** Optional per-quest flags for extensions. */
 	UPROPERTY(BlueprintReadOnly)
 	TMap<FName, bool> QuestFlags;
+	
+	UPROPERTY(BlueprintReadOnly)
+	int32 CurrentStep = INDEX_NONE;
+
+	UPROPERTY(BlueprintReadOnly)
+	EQuestState QuestState;
 
 	//UPROPERTY(BlueprintAssignable)
 	//FOnQuestUpdated OnQuestUpdated;
@@ -36,8 +42,9 @@ public:
 	bool TryProgress(int32 ObjectiveIndex, int32 Amount = 1);
 	
 	void RestoreFromSaveData(const FQuestSaveData& SaveData);
-
 	bool IsCompleted() const { return bCompleted; }
+	int32 GetCurrentStep() const { return CurrentStep; }
+	void ExportToSaveData(FQuestSaveData& OutSaveData) const;
 
 private:
 	void CheckCompletion();

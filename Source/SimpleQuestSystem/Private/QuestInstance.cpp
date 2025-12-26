@@ -6,6 +6,8 @@ void UQuestInstance::Init(const UQuestDefinition* Def)
 {
 	Definition = Def;
 	ObjectiveStates.SetNum(Definition->Objectives.Num());
+	CurrentStep = 0;
+	QuestState = EQuestState::Active;
 }
 void UQuestInstance::RestoreFromSaveData(const FQuestSaveData& SaveData)
 {
@@ -20,14 +22,23 @@ void UQuestInstance::RestoreFromSaveData(const FQuestSaveData& SaveData)
 	ObjectiveStates.SetNum(NumObjectives);
 
 	// Reset all objectives
-	for (FObjectiveState& State : ObjectiveStates)
+	for (int32 i = 0; i < NumObjectives; ++i)
 	{
-		State.CurrentCount = 0;
-		State.bCompleted = false;
+		FObjectiveState& ObjState = ObjectiveStates[i];
+		const FQuestObjective& ObjDef = Definition->Objectives[i];
+
+		const int32 SavedCount =
+			SaveData.ObjectiveCounts.IsValidIndex(i)
+			? SaveData.ObjectiveCounts[i]
+			: 0;
+
+		ObjState.CurrentCount = FMath::Clamp(SavedCount, 0, ObjDef.TargetCount);
+		ObjState.bCompleted = (ObjState.CurrentCount >= ObjDef.TargetCount);
 	}
 
 	// Restore based on quest state
-	switch (SaveData.State)
+	QuestState = SaveData.State;
+	switch (QuestState)
 	{
 	case EQuestState::Inactive:
 		bCompleted = false;
@@ -35,12 +46,12 @@ void UQuestInstance::RestoreFromSaveData(const FQuestSaveData& SaveData)
 
 	case EQuestState::Active:
 		{
-			const int32 Step = SaveData.CurrentStep;
+			CurrentStep = SaveData.CurrentStep;
 
 			// Mark previous steps as completed
 			for (int32 i = 0; i < NumObjectives; ++i)
 			{
-				if (i < Step)
+				if (i < CurrentStep)
 				{
 					ObjectiveStates[i].bCompleted = true;
 				}
@@ -88,6 +99,20 @@ bool UQuestInstance::TryProgress(int32 ObjectiveIndex, int32 Amount)
 	//OnQuestUpdated.Broadcast(this);
 
 	return true;
+}
+
+void UQuestInstance::ExportToSaveData(FQuestSaveData& OutSaveData) const
+{
+	OutSaveData.State = QuestState;
+	OutSaveData.CurrentStep = CurrentStep;
+
+	const int32 NumObjectives = ObjectiveStates.Num();
+	OutSaveData.ObjectiveCounts.SetNum(NumObjectives);
+
+	for (int32 i = 0; i < NumObjectives; ++i)
+	{
+		OutSaveData.ObjectiveCounts[i] = ObjectiveStates[i].CurrentCount;
+	}
 }
 
 void UQuestInstance::CheckCompletion()
