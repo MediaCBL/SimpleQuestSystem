@@ -2,8 +2,50 @@
 
 # SimpleQuestSystem Plugin
 
+Spare-time, work-in-progress project exploring a simple quest system. Intended as a reference and proof of concept rather than a production-ready solution.
+
+---
+
+## Project Status
+
+This project is currently in active experimentation and prototyping.  
+Development is done during spare time and focuses on exploring technical concepts rather than delivering a finalized system.
+
+Features, architecture, and APIs may change frequently.
+
+---
+
+## Scope and Goals
+
+The main objectives of this repository are:
+
+- Prototype a lightweight quest system  
+- Explore quest definition and progression logic  
+- Test objective tracking and validation systems  
+- Validate design ideas for future projects or plugins  
+
+This project is not intended to replace full-featured quest or narrative frameworks.
+
+---
+
+## Disclaimer
+
+This repository is provided as-is.
+
+- Code quality may vary  
+- Some systems may be incomplete  
+- Limited documentation in early stages  
+- Not production-ready  
+
+Use this project mainly as a learning resource, reference, or starting point for your own implementations.
+
+---
+
+## Contributions
+
+Contributions, feedback, and ideas are welcome.  
+However, this project prioritizes experimentation over long-term maintenance.
 A lightweight, data-driven quest system designed for runtime use in Unreal Engine.
-The plugin provides quest definitions, quest runtime instances, a world subsystem for global management, a flexible UI base class, and a component-based system for attaching quests to NPCs or interactive actors.
 
 ---
 
